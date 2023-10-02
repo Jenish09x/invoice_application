@@ -10,13 +10,13 @@ class InvoiceMaker extends StatefulWidget {
 }
 
 class _InvoiceMakerState extends State<InvoiceMaker> {
-  TextEditingController txtname = TextEditingController();
-  TextEditingController txtno = TextEditingController();
-  TextEditingController txtproductname = TextEditingController();
-  TextEditingController txttype = TextEditingController();
-  TextEditingController txtQuantity = TextEditingController();
-  TextEditingController txtprize = TextEditingController();
-  double total=0;
+  TextEditingController txtProductName = TextEditingController();
+  TextEditingController txtProductNo = TextEditingController();
+  TextEditingController txtGST = TextEditingController();
+  TextEditingController txtDiscount = TextEditingController();
+  TextEditingController txtQa = TextEditingController();
+  TextEditingController txtprice = TextEditingController();
+  double total = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,128 +28,65 @@ class _InvoiceMakerState extends State<InvoiceMaker> {
           title: Text(" Invoice Maker ",
               style: TextStyle(fontSize: 25, color: Colors.white)),
           leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.menu),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.share),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'pdf');
-              },
-              icon: Icon(Icons.picture_as_pdf_sharp),
-            )
-          ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                TextField(
-                  controller: txtname,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    label: Text(
-                      "Customer Name",
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
+                textTile(txtProductName, 'Product Name', TextInputType.name),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: txtno,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    label: Text(
-                      "invoice No.",
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
+                textTile(txtProductNo, 'Product No.', TextInputType.number),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: txtproductname,
-                  decoration: InputDecoration(
-                    label: Text(
-                      "Product Name",
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
+                textTile(txtGST, 'GST No.', TextInputType.number),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: txttype,
-                  decoration: InputDecoration(
-                    label: Text(
-                      "Type",
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
+                textTile(txtDiscount, 'Discount', TextInputType.number),
                 const SizedBox(height: 10),
                 Row(
                   children: [
                     SizedBox(
-                      width: 200,
-                      child: TextField(
-                        controller: txtQuantity,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          label: Text(
-                            "Quantity",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                        width: 190,
+                        child:
+                            textTile(txtQa, "Quantity", TextInputType.number)),
                     const SizedBox(width: 10),
                     SizedBox(
-                      width: 190,
-                      child: TextField(
-                        controller: txtprize,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          label: Text(
-                            "prises",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                        width: 190,
+                        child:
+                            textTile(txtprice, "Price", TextInputType.number)),
                   ],
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(onPressed: () {
-                  Global g1=Global();
-                  g1.InvoiceList.addAll([
-                    txtname.text,
-                    txtno.text,
-                    txtproductname.text,
-                    txttype.text,
-                    txtQuantity.text,
-                    txtprize.text,
-                  ]);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${g1.InvoiceList}")));
+                ElevatedButton(
+                    onPressed: () {
+                      int total =
+                          int.parse(txtprice.text) * int.parse(txtQa.text);
+                      Map m1 = {
+                        'Name': txtProductName.text,
+                        'ProductNo': txtProductNo.text,
+                        'GST': txtGST.text,
+                        'Discount': txtDiscount.text,
+                        'Qa': txtQa.text,
+                        'Price': txtprice.text,
+                        'Total': total,
+                      };
+                      Global.g1.InvoiceList.add(m1);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("${Global.g1.InvoiceList}")));
                       setState(() {
-                        total =double.parse(txtprize.text)*double.parse(txtQuantity.text);
+                        total;
                       });
-                }, child: Text("NEXT")),
+                      print(Global.g1.InvoiceList);
+                      Navigator.pop(context);
+                    },
+                    child: Text("NEXT")),
                 const SizedBox(height: 10),
                 Text(
                   "Total Payment : ${total}",
@@ -158,6 +95,22 @@ class _InvoiceMakerState extends State<InvoiceMaker> {
                 )
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextField textTile(
+      TextEditingController controller, String hint, TextInputType keyboard) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboard,
+      decoration: InputDecoration(
+        label: Text(
+          hint,
+          style: TextStyle(
+            color: Colors.grey.shade400,
           ),
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Utils/global_class.dart';
+
 class PdfScreen extends StatefulWidget {
   const PdfScreen({super.key});
 
@@ -12,93 +14,80 @@ class _PdfScreenState extends State<PdfScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          body: Center(
+        child: Column(
           children: [
-            const SizedBox(width: 30),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              width: MediaQuery.of(context).size.width * 0.4,
-              decoration: BoxDecoration(
-                  color: Colors.purple.shade300,
-                  borderRadius: BorderRadiusDirectional.vertical(
-                      bottom: Radius.circular(90))),
+            boldText("JANTA TEXTTILE"),
+            boldText('-------------------------------------------'),
+            smallText('AK ROAD,SURAT,GUJARAT'),
+            smallText('SARTHANA JAKATNAKA,SURAT,GUJARAT'),
+            smallText('MO. 992-491-6948,FAX NO. 5'),
+            boldText('-------------------------------------------'),
+            boldText("CASH MEMO"),
+            boldText('---------------'),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                smallText('S.NO. 5683'),
+                const SizedBox(
+                  width: 150,
+                ),
+                smallText('DATE : 27/9/23'),
+              ],
+            ),
+            boldText('______________________________________________'),
+            Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  const SizedBox(height: 50),
-                  const CircleAvatar(
-                      backgroundImage: AssetImage('assets/img/kakashi.jpg'),
-                      radius: 70),
-                  const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        boldText('CONTACT'),
-                        const SizedBox(height: 10),
-                        smallText('123 456 7890'),
-                        smallText('hello@123.com'),
-                        smallText('www.hellosite.com'),
-                        const SizedBox(height: 20),
-                        boldText('PROFILE'),
-                        const SizedBox(height: 10),
-                        smallText(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'),
-                        const SizedBox(height: 20),
-                        boldText('LANGUAGE'),
-                        const SizedBox(height: 10),
-                        smallText('English-Native'
-                            'French-Intermediate'
-                            'Spanish-Basic'),
-                        const SizedBox(height: 20),
-                        boldText('REFERENCES'),
-                        const SizedBox(height: 10),
-                        smallText('Available upon request'),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      boldText("Product Name"),
+                      boldText("Price"),
+                      boldText("Quantity"),
+                      boldText("Total"),
+                    ],
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Column(
+                    children: Global.g1.InvoiceList
+                        .map(
+                          (e) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              smallText("${e["Name"]}"),
+                              smallText("${e["Price"]}"),
+                              smallText("${e['Qa']}"),
+                              smallText("${e["Total"]}"),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  )
                 ],
               ),
             ),
-            const SizedBox(width: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 50),
-                Text(
-                  "Kakashi\nWilson",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-                ),
-                boldText('DIGITAL MARKETER'),
-                const SizedBox(height: 30),
-                boldText('EDUCATION'),
-                const SizedBox(height: 10),
-                smallText('London University'),
-                smallText(
-                    'Communication and Public\nRelations Degree 20013/2016'),
-                const SizedBox(height: 10),
-                smallText('London Master University'),
-                smallText('Master Degree Digital Marketing\n20016/2018'),
-                const SizedBox(height: 30),
-                boldText('WORK EXPERIENCE'),
-              ],
-            )
           ],
         ),
-      ),
+      )),
     );
   }
 
   Text smallText(String text) => Text(
         text,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
       );
 
   Text boldText(String text) {
     return Text(
       text,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 }
